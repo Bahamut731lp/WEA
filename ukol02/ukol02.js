@@ -6,6 +6,8 @@ function onToggleClick(event) {
     for (const poznamka of poznamky) {
         poznamka.classList.toggle(HIDDEN_CLASS_NAME);
     }
+
+    event.currentTarget.textContent = event.currentTarget.textContent === "zobrazit poznámky" ? "skrýt poznámky" : "zobrazit poznámky";
 }
 
 window.addEventListener("load", () => {
