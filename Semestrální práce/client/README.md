@@ -1,1 +1,0 @@
-# Klient k semestrální práci pro předmět WEA
