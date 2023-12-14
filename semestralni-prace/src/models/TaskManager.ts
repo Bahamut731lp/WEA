@@ -13,8 +13,8 @@ class TaskManager {
             fsp.mkdir("data/");
         }
 
-        if (!fs.existsSync("data/tasks.json")) {
-            fs.writeFileSync("data/tasks.json", "{}", {
+        if (!fs.existsSync(this.dataFilePath)) {
+            fs.writeFileSync(this.dataFilePath, "{}", {
                 encoding: "utf-8"
             })
         }
