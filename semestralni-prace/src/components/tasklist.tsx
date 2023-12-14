@@ -1,6 +1,6 @@
 "use client"
 import React from "react";
-import TaskFileSchema from "@/Interfaces/TaskFileSchema";
+import TaskFileSchema from "@/interfaces/TaskFileSchema";
 
 export default function Tasklist() {
     const [data, setData] = React.useState<TaskFileSchema>({})

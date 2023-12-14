@@ -1,7 +1,7 @@
 import fsp from 'fs/promises';
 import fs from "fs";
 import path from 'path';
-import TaskFileSchema from '@/Interfaces/TaskFileSchema';
+import TaskFileSchema from '@/interfaces/TaskFileSchema';
 
 class TaskManager {
     dataFilePath: string = "";
@@ -20,6 +20,10 @@ class TaskManager {
         }
     }
 
+    /**
+     * Boilerplate pro safe čtení souboru s daty
+     * @returns {TaskFileSchema | {}}
+     */
     private async readDataFile() {
         const data = await fsp.readFile(this.dataFilePath, {
             encoding: "utf-8"
@@ -46,6 +50,7 @@ class TaskManager {
      * Funkce pro vytvoření úkolu v db
      * @param title Název úkolu
      * @param description Popis úkolu
+     * @returns Zda-li bylo vytvoření úkolu úspěšné
      */
     async create(title: string, description: string) {
         const data = await this.readDataFile();
@@ -71,6 +76,12 @@ class TaskManager {
         return true
     }
 
+    /**
+     * Funkce pro updatování úkolu v db
+     * @param id ID úkolu, které se má změnit
+     * @param changes Slovník změn
+     * @returns Zda-li byl update úkolu úspěšný
+     */
     async update(id: string, changes: Partial<TaskFileSchema[keyof TaskFileSchema]>) {
         const data = await this.readDataFile();
 
@@ -94,6 +105,11 @@ class TaskManager {
         return true;
     }
 
+    /**
+     * Funkce pro smazání úkolu
+     * @param id ID úkolu, který se má smazat
+     * @returns Zda-li byl úkol úspěšně smazán
+     */
     async delete(id: string) {
         const data = await this.readDataFile();
 
