@@ -1,42 +1,86 @@
-import fsPromises from 'fs/promises';
-import path from 'path';
+import TaskManager from "@/models/TaskManager";
 
-const tasksFile = path.join(process.cwd(), 'data/tasks.json');
-
-//CREATE
+/**
+ * Funkce realizující operaci pro vytváření úkolů
+ * @param request Objekt s daty požadavku
+ * @returns JSON s polem chybějících klíčů
+ */
 export async function PUT(request: Request) {
-    return Response.json({
-        method: "PUT"
+    const db = new TaskManager()
+    const data = await request.json();
+
+    const required = ["title", "description"];
+    const missing = required.filter(key => !(key in data));
+
+    if (missing.length > 0) return Response.json({
+        missing
+    }, {
+        status: 400
     })
+
+    db.create(String(data.title), String(data.description));
+
+    return Response.json({ missing })
 }
 
-//READ
+/**
+ * Funkce realizující čtení úkolů
+ * @param request Objekt s daty požadavku 
+ * @returns JSON s úkoly (včetně IDček)
+ */
 export async function GET(request: Request) {
-    const data = await fsPromises.readFile(tasksFile, {
-        encoding: "utf-8"
-    });
+    const db = new TaskManager();
+    const data = await db.list();
 
-    let parsed = null;
-
-    try {
-        parsed = JSON.parse(data);    
-    } catch (error) {
-        return 500
-    }
-
-    return Response.json(parsed)
+    return Response.json(data ?? {})
 }
 
-//UPDATE
+/**
+ * Funkce pro updatování úkolu
+ * @param request Objekt s daty požadavku 
+ * @returns Bool, jestli byl úkol updatován a popř. chybějící klíče
+ */
 export async function POST(request: Request) {
+    const db = new TaskManager();
+    const data = await request.json();
+    const allowed = ["title", "description", "isCompleted"];
+
+    if (!("id" in data)) return Response.json({
+        missing: ["id"],
+        updated: false
+    }, {
+        status: 400
+    })
+
+    const changes = Object.fromEntries(
+        Object.entries(data)
+        .filter(([key, _]) => allowed.includes(key))
+    )
+
+    const updated = await db.update(data.id, changes);
+
     return Response.json({
-        method: "POST"
+        missing: [],
+        updated
     })
 }
 
 //DELETE
 export async function DELETE(request: Request) {
+    const db = new TaskManager();
+    const data = await request.json();
+
+    if (!("id" in data)) return Response.json({
+        missing: ["id"],
+        deleted: false
+    }, {
+        status: 400
+    })
+
+    const deleted = await db.delete(data.id);
+
     return Response.json({
-        method: "DELETE"
+        deleted,
+        missing: []
     })
 }

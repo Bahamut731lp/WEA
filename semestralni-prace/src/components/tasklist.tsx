@@ -1,8 +1,9 @@
 "use client"
 import React from "react";
+import TaskFileSchema from "@/Interfaces/TaskFileSchema";
 
 export default function Tasklist() {
-    const [data, setData] = React.useState<Record<string, unknown>>({})
+    const [data, setData] = React.useState<TaskFileSchema>({})
     const [isLoading, setLoading] = React.useState(true)
    
     React.useEffect(() => {
@@ -41,7 +42,7 @@ export default function Tasklist() {
                             </td>
                         </tr>
                     ) : (
-                        [...(data.tasks ?? [])].map((task, i) => (
+                        [...(Object.values(data) ?? [])].map((task, i) => (
                             <tr key={i}>
                                 <th>
                                     <label>
