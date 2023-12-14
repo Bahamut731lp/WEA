@@ -9,7 +9,7 @@ import TaskFileSchema from '@/interfaces/TaskFileSchema';
 export default function Page() {
     const [data, setData] = React.useState<TaskFileSchema>({})
     const [isLoading, setLoading] = React.useState(true)
-   
+
     async function getTaskData() {
         const response = await fetch('/api/task')
         const json = await response.json();
@@ -22,7 +22,7 @@ export default function Page() {
         setLoading(true);
         getTaskData()
     }, [])
-    
+
     return (
         <main className="flex min-h-screen flex-col items-center gap-4 bg-base-100">
             <div className="navbar bg-base-200">
@@ -36,9 +36,16 @@ export default function Page() {
                 </div>
             </div>
 
-            <TaskCreation refresh={getTaskData}/>
+            <div className="flex w-full px-4 gap-2">
+                <TaskCreation refresh={getTaskData} />
+                <select className="select select-bordered">
+                    <option disabled selected>Všechny úkoly</option>
+                    <option>Splněné</option>
+                    <option>Nesplněné</option>
+                </select>
+            </div>
             <div className="overflow-x-auto w-full">
-                <Tasklist data={data} isLoading={isLoading}/>
+                <Tasklist data={data} isLoading={isLoading} />
             </div>
             {/* <div className="mockup-code">
                 <pre data-prefix="1"><code>npm i daisyui</code></pre> 
