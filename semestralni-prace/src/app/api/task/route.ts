@@ -11,16 +11,25 @@ export async function PUT(request: Request) {
 
     const required = ["title", "description"];
     const missing = required.filter(key => !(key in data));
+    const bad = required.filter(key => !data[key]);
 
     if (missing.length > 0) return Response.json({
-        missing
+        missing,
+        bad: []
+    }, {
+        status: 400
+    })
+
+    if (bad.length > 0) return Response.json({
+        missing,
+        bad
     }, {
         status: 400
     })
 
     db.create(String(data.title), String(data.description));
 
-    return Response.json({ missing })
+    return Response.json({ missing, bad })
 }
 
 /**

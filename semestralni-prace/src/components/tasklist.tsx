@@ -1,21 +1,7 @@
 "use client"
 import React from "react";
-import TaskFileSchema from "@/interfaces/TaskFileSchema";
 
-export default function Tasklist() {
-    const [data, setData] = React.useState<TaskFileSchema>({})
-    const [isLoading, setLoading] = React.useState(true)
-   
-    React.useEffect(() => {
-      fetch('/api/task')
-        .then((res) => res.json())
-        .then((data) => {
-          setData(data)
-          setLoading(false)
-        })
-    }, [])
-   
-
+export default function Tasklist({data, isLoading}) {
     return (
         <table className="table">
             <thead>
