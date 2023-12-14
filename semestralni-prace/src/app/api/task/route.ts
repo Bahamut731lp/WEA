@@ -1,7 +1,7 @@
 import TaskManager from "@/models/TaskManager";
 
 /**
- * Funkce realizující operaci pro vytváření úkolů
+ * Controller realizující operaci pro vytváření úkolů
  * @param request Objekt s daty požadavku
  * @returns JSON s polem chybějících klíčů
  */
@@ -24,7 +24,7 @@ export async function PUT(request: Request) {
 }
 
 /**
- * Funkce realizující čtení úkolů
+ * Controller realizující čtení úkolů
  * @param request Objekt s daty požadavku 
  * @returns JSON s úkoly (včetně IDček)
  */
@@ -36,7 +36,7 @@ export async function GET(request: Request) {
 }
 
 /**
- * Funkce pro updatování úkolu
+ * Controller pro updatování úkolu
  * @param request Objekt s daty požadavku 
  * @returns Bool, jestli byl úkol updatován a popř. chybějící klíče
  */
@@ -65,7 +65,11 @@ export async function POST(request: Request) {
     })
 }
 
-//DELETE
+/**
+ * Controller pro smazání úkolu
+ * @param request Objekt s daty požadavku 
+ * @returns JSON s informací o smazání (true/false) a chybějícími klíči
+ */
 export async function DELETE(request: Request) {
     const db = new TaskManager();
     const data = await request.json();
