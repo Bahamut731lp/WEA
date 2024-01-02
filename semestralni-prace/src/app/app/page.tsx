@@ -38,10 +38,10 @@ export default function Page() {
 
             <div className="flex w-full px-4 gap-2">
                 <TaskCreation refresh={getTaskData} />
-                <select className="select select-bordered">
-                    <option disabled selected>Všechny úkoly</option>
-                    <option>Splněné</option>
-                    <option>Nesplněné</option>
+                <select className="select select-bordered" defaultValue="0">
+                    <option value="0">Všechny úkoly</option>
+                    <option value="1">Splněné</option>
+                    <option value="2">Nesplněné</option>
                 </select>
             </div>
             <div className="overflow-x-auto w-full">
