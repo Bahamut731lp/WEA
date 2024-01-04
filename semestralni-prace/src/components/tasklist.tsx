@@ -55,14 +55,14 @@ function Status({isCompleted}: { isCompleted: boolean }) {
         <td>
             {
                 isCompleted ? (
-                    <div className="badge badge-success gap-2">
+                    <div className="badge badge-success gap-2 w-28 justify-start">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
                             <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clipRule="evenodd" />
                         </svg>
                         Splněno
                     </div>
                 ) : (
-                    <div className="badge badge-error gap-2">
+                    <div className="badge badge-error gap-2 w-28 justify-start">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-4 h-4 stroke-current">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
@@ -74,8 +74,14 @@ function Status({isCompleted}: { isCompleted: boolean }) {
     )
 }
 
-export default function Tasklist({ data, isLoading }: { data: TaskFileSchema, isLoading: boolean }) {
+export default function Tasklist({ data, isLoading, filter }: { data: TaskFileSchema, isLoading: boolean, filter: string }) {
     const [user] = useUser();
+
+    const filters = {
+        "0": (data) => true,
+        "1": (data) => data.isCompleted,
+        "2": (data) => !data.isCompleted
+    }
 
     return (
         <table className="table">
@@ -93,7 +99,7 @@ export default function Tasklist({ data, isLoading }: { data: TaskFileSchema, is
             <tbody>
                 {
                     isLoading ? (<Loading />) : (
-                        [...(Object.values(data) ?? [])].map((task, i) => (
+                        [...(Object.values(data) ?? []).filter(v => filters[filter](v))].map((task, i) => (
                             <tr key={i}>
                                 <td></td>
                                 <td>
