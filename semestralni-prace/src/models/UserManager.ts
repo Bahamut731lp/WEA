@@ -4,7 +4,7 @@ import path from 'path';
 import bcrypt from "bcrypt";
 
 import _ from "lodash";
-import AuthManager from './AuthManager';
+import SessionManager from './SessionManager';
 import UserFileSchema from '@/interfaces/UserFileSchema';
 
 class UserManager {
@@ -61,7 +61,7 @@ class UserManager {
         const data = await this.readDataFile();
         if (!data) return false;
 
-        const hashedPassword = await bcrypt.hash(password, AuthManager.saltRounds);
+        const hashedPassword = await bcrypt.hash(password, SessionManager.saltRounds);
 
         data[username] = {
             username,
@@ -90,9 +90,8 @@ class UserManager {
         if (!data) return false;
 
         const user = data[username];
-        const response = _.pick(user, ["username", "isDeleted", "hasTwoFactorAuth"]);
 
-        return response;
+        return user;
     }
 
 
