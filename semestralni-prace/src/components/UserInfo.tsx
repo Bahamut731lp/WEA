@@ -3,7 +3,6 @@ import Link from "next/link";
 
 function UserInfo() {
     const [user] = useUser();
-    console.log(user);
     return (
         <div className="flex-none gap-2">
             {

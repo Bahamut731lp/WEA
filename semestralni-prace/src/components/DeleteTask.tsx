@@ -1,3 +1,4 @@
+import { useData } from "@/context/DataContext";
 import { useTask } from "@/context/TaskContext";
 import { useUser } from "@/context/UserContext";
 import React from "react";
@@ -5,6 +6,7 @@ import React from "react";
 function DeleteTask() {
     const task = useTask();
     const [user] = useUser();
+    const {refresh} = useData();
 
     const dialogRef = React.useRef<HTMLDialogElement>(null);
 
@@ -26,7 +28,8 @@ function DeleteTask() {
         })
 
         if (response.ok) {
-            dialogRef.current?.close()
+            dialogRef.current?.close();
+            refresh();
         }
     }
 

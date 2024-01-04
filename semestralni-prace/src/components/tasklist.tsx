@@ -1,11 +1,12 @@
 "use client"
 
+import _ from "lodash";
 import React from "react";
-import TaskFileSchema from "@/interfaces/TaskFileSchema";
+
 import DeleteTask from "@/components/DeleteTask";
 import { useUser } from "@/context/UserContext";
 import { TaskContextProvider } from "@/context/TaskContext";
-import _ from "lodash";
+import { useData } from "@/context/DataContext";
 
 /**
  * Komponenta pro zobrazení teček při načítání dat
@@ -103,7 +104,9 @@ function Status({ isCompleted }: { isCompleted: boolean }) {
     )
 }
 
-export default function Tasklist({ data, isLoading, filter }: { data: TaskFileSchema, isLoading: boolean, filter: string }) {
+export default function Tasklist({ filter }: { filter: string }) {
+    const {data, isLoading} = useData();
+
     // Filtering predicates
     const filters = {
         "0": () => true,
@@ -129,7 +132,9 @@ export default function Tasklist({ data, isLoading, filter }: { data: TaskFileSc
             </thead>
             <tbody>
                 {
-                    isLoading ? (<Loading />) : (
+                    isLoading ? (
+                        <Loading />
+                    ) : (
                         transformed.map((task, i) => <Task data={task} key={task.id}></Task>)
                     )
                 }

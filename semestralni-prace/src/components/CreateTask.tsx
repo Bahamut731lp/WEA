@@ -1,9 +1,11 @@
 "use client"
+import { useData } from "@/context/DataContext";
 import { useUser } from "@/context/UserContext";
 import React from "react";
 
-export default function CreateTask({ refresh }) {
+export default function CreateTask() {
     const [user] = useUser();
+    const {refresh} = useData();
     const [name, setName] = React.useState("");
     const [desc, setDesc] = React.useState("");
     const [nameFeedback, setNameFeedback] = React.useState<boolean | null>(null);
