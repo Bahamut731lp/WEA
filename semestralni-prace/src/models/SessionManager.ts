@@ -61,7 +61,7 @@ class SessionManager {
             }
         )
 
-        return true
+        return token
     }
 
     async verify(token: string) {

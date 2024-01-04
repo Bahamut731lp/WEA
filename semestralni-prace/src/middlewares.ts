@@ -11,5 +11,5 @@ export async function getLoginCredentialsValidity(request: Request) {
     const response = await session.verify(auth);
     if (!response) return failedAuthResponse;
 
-    return NextResponse.json({ authorization: true }, { status: 200 })
+    return NextResponse.json({ authorization: true, response }, { status: 200 })
 }

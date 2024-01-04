@@ -1,14 +1,15 @@
 "use client"
 import React from 'react';
-import Link from 'next/link';
 
 import Tasklist from '@/components/tasklist';
 import TaskCreation from '@/components/taskcreation';
 import TaskFileSchema from '@/interfaces/TaskFileSchema';
+import { UserContextProvider, useUser } from '@/context/UserContext';
+import UserInfo from '@/components/UserInfo';
 
 export default function Page() {
-    const [data, setData] = React.useState<TaskFileSchema>({})
-    const [isLoading, setLoading] = React.useState(true)
+    const [data, setData] = React.useState<TaskFileSchema>({});
+    const [isLoading, setLoading] = React.useState(true);
 
     async function getTaskData() {
         const response = await fetch('/api/task')
@@ -20,20 +21,18 @@ export default function Page() {
 
     React.useEffect(() => {
         setLoading(true);
-        getTaskData()
+        getTaskData();
     }, [])
 
+
     return (
+        <UserContextProvider>
         <main className="flex min-h-screen flex-col items-center gap-4 bg-base-100">
             <div className="navbar bg-base-200">
                 <div className="flex-1">
                     <a className="btn btn-ghost text-xl">TODO App</a>
                 </div>
-                <div className="flex-none gap-2">
-                    <Link href="/login">
-                        <button className="btn btn-sm btn-primary">Přihlásit</button>
-                    </Link>
-                </div>
+                <UserInfo></UserInfo>
             </div>
 
             <div className="flex w-full px-4 gap-2">
@@ -53,5 +52,6 @@ export default function Page() {
                 <pre data-prefix="3" className="bg-warning text-warning-content"><code>Error!</code></pre>
             </div> */}
         </main>
+        </UserContextProvider>
     )
 }

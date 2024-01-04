@@ -28,8 +28,8 @@ export async function POST(request: Request) {
     const matching = await bcrypt.compare(body.password, user.password);
 
     if (matching) {
-        session.create(user.username);
-        return Response.json({missing}, { status: 200 })
+        const token = await session.create(user.username);
+        return Response.json({missing, token}, { status: 200 })
     }
 
     return Response.json({missing}, { status: 403 })
