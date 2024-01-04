@@ -1,10 +1,10 @@
 "use client"
 import React from 'react';
 
+import CreateTask from '@/components/CreateTask';
 import Tasklist from '@/components/tasklist';
-import TaskCreation from '@/components/taskcreation';
 import TaskFileSchema from '@/interfaces/TaskFileSchema';
-import { UserContextProvider, useUser } from '@/context/UserContext';
+import { UserContextProvider } from '@/context/UserContext';
 import UserInfo from '@/components/UserInfo';
 
 export default function Page() {
@@ -37,7 +37,7 @@ export default function Page() {
             </div>
 
             <div className="flex w-full px-4 gap-2">
-                <TaskCreation refresh={getTaskData} />
+                <CreateTask refresh={getTaskData} />
                 <select className="select select-bordered" value={filter} onChange={(e) => setFilter(e.target.value)}>
                     <option value="0">Všechny úkoly</option>
                     <option value="1">Splněné</option>

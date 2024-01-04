@@ -1,8 +1,8 @@
 import React from 'react'
 
-const UserContext = React.createContext([null, () => {}]);
+const UserContext = React.createContext([null, () => { }]);
 
-export function UserContextProvider({children}) {
+export function UserContextProvider({ children }) {
     const [user, setUser] = React.useState(null);
 
     async function getUserData() {
@@ -17,7 +17,7 @@ export function UserContextProvider({children}) {
         });
 
         const data = await response.json();
-        setUser(data.response);
+        setUser({...data.response, token: auth});
     }
 
     React.useEffect(() => {
@@ -32,6 +32,6 @@ export function UserContextProvider({children}) {
 }
 
 export const useUser = () => {
-  const colorMode = React.useContext(UserContext)
-  return colorMode
+    const user = React.useContext(UserContext)
+    return user
 }

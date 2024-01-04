@@ -1,7 +1,11 @@
 "use client"
+
 import React from "react";
 import TaskFileSchema from "@/interfaces/TaskFileSchema";
+import DeleteTask from "@/components/DeleteTask";
 import { useUser } from "@/context/UserContext";
+import { TaskContextProvider } from "@/context/TaskContext";
+import _ from "lodash";
 
 /**
  * Komponenta pro zobrazení teček při načítání dat
@@ -38,19 +42,44 @@ function Controls() {
                     <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clipRule="evenodd" />
                 </svg>
             </button>
-            <button className="btn btn-square btn-ghost btn-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                </svg>
-            </button>
+
+            <DeleteTask />
         </td>
+    )
+}
+
+/**
+ * Komponenta řádku
+ */
+function Task({ data }) {
+    const [task, setTask] = React.useState(data);
+
+    return (
+        <TaskContextProvider value={task}>
+            <tr>
+                <td></td>
+                <td>
+                    <div className="flex items-center gap-3">
+                        <div>
+                            <div className="font-bold">{task.title ?? ""}</div>
+                            <div className="text-sm opacity-50">{task.createdBy ?? "Anonymní"}</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    {task.description ?? ""}
+                </td>
+                <Status isCompleted={task.isCompleted} />
+                <Controls />
+            </tr>
+        </TaskContextProvider>
     )
 }
 
 /**
  * Komponenta pro zobrazování stavu úkolu
  */
-function Status({isCompleted}: { isCompleted: boolean }) {
+function Status({ isCompleted }: { isCompleted: boolean }) {
     return (
         <td>
             {
@@ -75,13 +104,15 @@ function Status({isCompleted}: { isCompleted: boolean }) {
 }
 
 export default function Tasklist({ data, isLoading, filter }: { data: TaskFileSchema, isLoading: boolean, filter: string }) {
-    const [user] = useUser();
-
+    // Filtering predicates
     const filters = {
-        "0": (data) => true,
+        "0": () => true,
         "1": (data) => data.isCompleted,
         "2": (data) => !data.isCompleted
     }
+    
+    // Task list transformed and filtered by criteria
+    const transformed = _(data).entries().map(([key, value]) => ({...value, id: key})).filter(v => filters[filter](v)).value();
 
     return (
         <table className="table">
@@ -99,24 +130,7 @@ export default function Tasklist({ data, isLoading, filter }: { data: TaskFileSc
             <tbody>
                 {
                     isLoading ? (<Loading />) : (
-                        [...(Object.values(data) ?? []).filter(v => filters[filter](v))].map((task, i) => (
-                            <tr key={i}>
-                                <td></td>
-                                <td>
-                                    <div className="flex items-center gap-3">
-                                        <div>
-                                            <div className="font-bold">{task.title ?? ""}</div>
-                                            <div className="text-sm opacity-50">{task.createdBy ?? "Anonymní"}</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    {task.description ?? ""}
-                                </td>
-                                <Status isCompleted={task.isCompleted}/>
-                                <Controls />
-                            </tr>
-                        ))
+                        transformed.map((task, i) => <Task data={task} key={task.id}></Task>)
                     )
                 }
             </tbody>
