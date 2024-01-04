@@ -34,6 +34,9 @@ export default function CreateTask() {
 
         const response = await fetch("/api/task", {
             method: "PUT",
+            headers: {
+                "Authorization": user.token
+            },
             body: JSON.stringify({
                 title: name,
                 description: desc

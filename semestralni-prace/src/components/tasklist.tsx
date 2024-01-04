@@ -3,7 +3,9 @@
 import _ from "lodash";
 import React from "react";
 
+import ConfirmTask from "@/components/ConfirmTask";
 import DeleteTask from "@/components/DeleteTask";
+
 import { useUser } from "@/context/UserContext";
 import { TaskContextProvider } from "@/context/TaskContext";
 import { useData } from "@/context/DataContext";
@@ -33,14 +35,11 @@ function Controls() {
 
     return (
         <td>
+            <ConfirmTask/>
+
             <button className="btn btn-square btn-ghost btn-sm">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-                </svg>
-            </button>
-            <button className="btn btn-square btn-ghost btn-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-                    <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clipRule="evenodd" />
                 </svg>
             </button>
 
@@ -53,8 +52,8 @@ function Controls() {
  * Komponenta řádku
  */
 function Task({ data }) {
-    const [task, setTask] = React.useState(data);
-
+    const task = data;
+    
     return (
         <TaskContextProvider value={task}>
             <tr>
