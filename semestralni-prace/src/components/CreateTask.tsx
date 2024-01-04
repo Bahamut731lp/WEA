@@ -54,6 +54,7 @@ export default function CreateTask() {
         setDesc("");
         setNameFeedback(null);
         setDescFeedback(null);
+        setServerFeedback("");
     }
 
     // Pokud user není přihlášen, nebudeme nic vykreslovat
