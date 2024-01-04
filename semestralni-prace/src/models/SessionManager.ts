@@ -64,16 +64,15 @@ class SessionManager {
         return true
     }
 
-    async verify(username: string, token: string) {
+    async verify(token: string) {
         const data = await this.readDataFile();
-        if (!data || !data[username]) return false;
+        if (!data) return null;
 
         try {
             const payload = jwt.verify(token, SessionManager.secret);
-            console.log(payload);
-            return true;
+            return payload;
         } catch (error) {
-            return false;
+            return null;
         }
     }
 }

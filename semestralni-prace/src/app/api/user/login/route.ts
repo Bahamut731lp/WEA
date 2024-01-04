@@ -26,7 +26,6 @@ export async function POST(request: Request) {
     if (!user) return Response.json({missing, exists: false}, { status: 404});
 
     const matching = await bcrypt.compare(body.password, user.password);
-    console.log(matching);
 
     if (matching) {
         session.create(user.username);

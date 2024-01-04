@@ -1,3 +1,4 @@
+import { getLoginCredentialsValidity } from "@/middlewares";
 import TaskManager from "@/models/TaskManager";
 
 /**
@@ -6,6 +7,9 @@ import TaskManager from "@/models/TaskManager";
  * @returns JSON s polem chybějících klíčů
  */
 export async function PUT(request: Request) {
+    const authResponse = await getLoginCredentialsValidity(request);
+    if (authResponse.status != 200) return authResponse;
+
     const db = new TaskManager()
     const data = await request.json();
 
@@ -34,7 +38,7 @@ export async function PUT(request: Request) {
 
 /**
  * Controller realizující čtení úkolů
- * @param request Objekt s daty požadavku 
+ * @param request Objekt s daty požadavku
  * @returns JSON s úkoly (včetně IDček)
  */
 export async function GET(request: Request) {
@@ -46,20 +50,18 @@ export async function GET(request: Request) {
 
 /**
  * Controller pro updatování úkolu
- * @param request Objekt s daty požadavku 
+ * @param request Objekt s daty požadavku
  * @returns Bool, jestli byl úkol updatován a popř. chybějící klíče
  */
 export async function POST(request: Request) {
+    const authResponse = await getLoginCredentialsValidity(request);
+    if (authResponse.status != 200) return authResponse;
+
     const db = new TaskManager();
     const data = await request.json();
     const allowed = ["title", "description", "isCompleted"];
 
-    if (!("id" in data)) return Response.json({
-        missing: ["id"],
-        updated: false
-    }, {
-        status: 400
-    })
+    if (!("id" in data)) return Response.json({ missing: ["id"], updated: false }, { status: 400 })
 
     const changes = Object.fromEntries(
         Object.entries(data)
@@ -76,10 +78,13 @@ export async function POST(request: Request) {
 
 /**
  * Controller pro smazání úkolu
- * @param request Objekt s daty požadavku 
+ * @param request Objekt s daty požadavku
  * @returns JSON s informací o smazání (true/false) a chybějícími klíči
  */
 export async function DELETE(request: Request) {
+    const authResponse = await getLoginCredentialsValidity(request);
+    if (authResponse.status != 200) return authResponse;
+
     const db = new TaskManager();
     const data = await request.json();
 
