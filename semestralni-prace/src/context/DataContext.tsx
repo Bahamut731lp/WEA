@@ -5,7 +5,7 @@ const DataContext = React.createContext({});
 
 export function DataContextProvider({ children }) {
     const [data, setData] = React.useState<TaskFileSchema>({});
-    const [loading, setLoading] = React.useState(false);
+    const [loading, setLoading] = React.useState(true);
 
     async function getTaskData() {
         const response = await fetch('/api/task')
