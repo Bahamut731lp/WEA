@@ -69,11 +69,30 @@ class SessionManager {
         if (!data) return null;
 
         try {
-            const payload = jwt.verify(token, SessionManager.secret);
+            const payload = jwt.verify(token, SessionManager.secret); 
+            if (!(payload.username in data)) return null;
+            
             return payload;
         } catch (error) {
             return null;
         }
+    }
+
+    async remove(username: string) {
+        const data = await this.readDataFile();
+        if (!data || !data[username]) return false;
+
+        delete data[username];
+
+        await fsp.writeFile(
+            this.sessionFilePath,
+            JSON.stringify(data, null, 4),
+            { 
+                encoding: "utf-8"
+            }
+        )
+
+        return true;
     }
 }
 

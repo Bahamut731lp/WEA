@@ -17,7 +17,10 @@ export function UserContextProvider({ children }) {
         });
 
         const data = await response.json();
-        setUser({...data.response, token: auth});
+
+        if (response.ok) {
+            setUser({...data.response, token: auth});
+        }
     }
 
     React.useEffect(() => {

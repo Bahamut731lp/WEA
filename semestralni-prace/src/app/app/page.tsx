@@ -6,7 +6,7 @@ import Tasklist from '@/components/tasklist';
 import UserInfo from '@/components/UserInfo';
 
 import { UserContextProvider } from '@/context/UserContext';
-import { DataContextProvider, useData } from '@/context/DataContext';
+import { DataContextProvider } from '@/context/DataContext';
 
 export default function Page() {
     const [filter, setFilter] = React.useState("0");

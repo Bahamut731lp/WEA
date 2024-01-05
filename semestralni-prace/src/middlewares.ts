@@ -4,7 +4,7 @@ import SessionManager from './models/SessionManager';
 export async function getLoginCredentialsValidity(request: Request) {
     const auth = request.headers.get("authorization");
     const session = new SessionManager();
-    const failedAuthResponse = NextResponse.json({authorization: false}, { status: 403 });
+    const failedAuthResponse = NextResponse.json({authorization: false, response: {}}, { status: 403 });
 
     if (!auth) return failedAuthResponse;
 
