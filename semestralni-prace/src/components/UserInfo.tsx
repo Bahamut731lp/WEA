@@ -7,6 +7,8 @@ function UserInfo() {
     const {refresh} = useData();
 
     async function onLogoutClick() {
+        if (!user) return;
+        
         const response = await fetch("/api/user/logout", {
             method: "POST",
             headers: {

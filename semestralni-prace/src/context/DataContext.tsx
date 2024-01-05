@@ -1,9 +1,15 @@
 import TaskFileSchema from '@/interfaces/TaskFileSchema';
-import React from 'react'
+import React, { ReactNode } from 'react'
 
-const DataContext = React.createContext({});
+type DataStateType = {
+    data: TaskFileSchema,
+    isLoading: boolean,
+    refresh: () => void
+}
 
-export function DataContextProvider({ children }) {
+const DataContext = React.createContext<DataStateType>({data: {}, isLoading: false, refresh: () => {}});
+
+export function DataContextProvider({ children }: { children: ReactNode }) {
     const [data, setData] = React.useState<TaskFileSchema>({});
     const [loading, setLoading] = React.useState(true);
 

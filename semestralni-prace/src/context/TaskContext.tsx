@@ -1,8 +1,10 @@
 import React from 'react'
+import TaskFileSchema from '@/interfaces/TaskFileSchema';
 
-const TaskContext = React.createContext(null);
+type TaskStateType = TaskFileSchema[keyof TaskFileSchema] & { id: string} | null;
+const TaskContext = React.createContext<TaskStateType>(null);
 
-export function TaskContextProvider({ value, children }) {
+export function TaskContextProvider({ value, children }: { value: TaskStateType, children: React.ReactNode }) {
 
     return (
         <TaskContext.Provider value={value}>

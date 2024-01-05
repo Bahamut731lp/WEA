@@ -69,7 +69,9 @@ class SessionManager {
         if (!data) return null;
 
         try {
-            const payload = jwt.verify(token, SessionManager.secret); 
+            const payload = jwt.verify(token, SessionManager.secret);
+            
+            if (typeof payload == "string") return null;
             if (!(payload.username in data)) return null;
             
             return payload;

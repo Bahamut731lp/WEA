@@ -10,6 +10,7 @@ import DeleteTask from "@/components/DeleteTask";
 import { useUser } from "@/context/UserContext";
 import { TaskContextProvider } from "@/context/TaskContext";
 import { useData } from "@/context/DataContext";
+import TaskFileSchema from "@/interfaces/TaskFileSchema";
 
 /**
  * Komponenta pro zobrazení teček při načítání dat
@@ -48,7 +49,7 @@ function Controls() {
 /**
  * Komponenta řádku
  */
-function Task({ data }) {
+function Task({ data }: { data: TaskFileSchema[keyof TaskFileSchema] & { id: string }}) {
     const task = data;
     
     return (
@@ -59,7 +60,6 @@ function Task({ data }) {
                     <div className="flex items-center gap-3">
                         <div>
                             <div className="font-bold">{task.title ?? ""}</div>
-                            <div className="text-sm opacity-50">{task.createdBy ?? "Anonymní"}</div>
                         </div>
                     </div>
                 </td>
@@ -104,7 +104,9 @@ export default function Tasklist({ filter }: { filter: string }) {
     const {data, isLoading} = useData();
 
     // Filtering predicates
-    const filters = {
+    const filters: {
+        [key: string]: (data: TaskFileSchema[keyof TaskFileSchema] & {id : string}) => boolean
+    } = {
         "0": () => true,
         "1": (data) => data.isCompleted,
         "2": (data) => !data.isCompleted

@@ -17,6 +17,8 @@ function DeleteTask() {
     }
 
     async function onTaskDelete() {
+        if (!user || !task) return;
+        
         const response = await fetch("/api/task", {
             method: "DELETE",
             headers: {

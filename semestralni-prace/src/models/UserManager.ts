@@ -66,7 +66,6 @@ class UserManager {
         data[username] = {
             username,
             password: hashedPassword,
-            hasTwoFactorAuth: false,
             isDeleted: false
         }
 

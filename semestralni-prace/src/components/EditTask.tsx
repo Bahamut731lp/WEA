@@ -9,8 +9,8 @@ export default function EditTask() {
     const task = useTask();
     const { refresh } = useData();
     
-    const [name, setName] = React.useState(task.title);
-    const [desc, setDesc] = React.useState(task.description);
+    const [name, setName] = React.useState(task?.title ?? "");
+    const [desc, setDesc] = React.useState(task?.description ?? "");
     const [nameFeedback, setNameFeedback] = React.useState<boolean | null>(null);
     const [descFeedback, setDescFeedback] = React.useState<boolean | null>(null);
     const [serverFeedback, setServerFeedback] = React.useState("");
@@ -33,7 +33,7 @@ export default function EditTask() {
         if (!name) setNameFeedback(false);
         if (!desc) setDescFeedback(false);
 
-        if (!name || !desc) return;
+        if (!name || !desc || !user || !task) return;
 
         const response = await fetch("/api/task", {
             method: "POST",

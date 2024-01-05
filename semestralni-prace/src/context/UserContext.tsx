@@ -1,9 +1,11 @@
 import React from 'react'
+import UserFileSchema from '@/interfaces/UserFileSchema';
 
-const UserContext = React.createContext([null, () => { }]);
+type UserStateType = (UserFileSchema[keyof UserFileSchema] & { token: string }) | null 
+const UserContext = React.createContext<[UserStateType, any]>([null, () => { }]);
 
-export function UserContextProvider({ children }) {
-    const [user, setUser] = React.useState(null);
+export function UserContextProvider({ children }: { children: React.ReactNode }) {
+    const [user, setUser] = React.useState<UserStateType>(null);
 
     async function getUserData() {
         const auth = window.sessionStorage.getItem("authorization");

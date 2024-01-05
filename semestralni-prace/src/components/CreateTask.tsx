@@ -30,7 +30,7 @@ export default function CreateTask() {
         if (!name) setNameFeedback(false);
         if (!desc) setDescFeedback(false);
 
-        if (!name || !desc) return;
+        if (!name || !desc || !user) return;
 
         const response = await fetch("/api/task", {
             method: "PUT",

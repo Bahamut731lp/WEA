@@ -17,6 +17,8 @@ function ConfirmTask() {
     }
 
     async function onTaskConfirm() {
+        if (!user || !task) return;
+
         const response = await fetch("/api/task", {
             method: "POST",
             headers: {
@@ -34,7 +36,7 @@ function ConfirmTask() {
         }
     }
 
-    if (task.isCompleted) return null;
+    if (task?.isCompleted) return null;
 
     return (
         <>
