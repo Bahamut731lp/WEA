@@ -13,8 +13,8 @@ export default function Home() {
                             <Link href="/login">
                                 <button className="btn btn-primary">Přihlásit se</button>
                             </Link>
-                            <Link href="/register">
-                                <button className="btn btn-outline btn-secondary">Registrovat se</button>
+                            <Link href="/app">
+                                <button className="btn btn-outline btn-secondary">Prohlížet úkoly</button>
                             </Link>
                         </div>
                     </div>
